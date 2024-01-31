@@ -1,0 +1,47 @@
+main.rs : 
+	pub mod user_inputs;
+	pub mod vector_creations;
+	pub mod median_mode;
+
+	use crate::user_inputs::{user_input_int, user_input_str};
+	use crate::vector_creations::vector_creator;
+	use crate::median_mode::median_in_vector;
+	use crate::median_mode::mode_in_vector;
+
+	fn choose_or_no
+	fn user_answers
+	prob another fn that checks if 1 mode, no mode, or multiple modes
+	prob another fn that compares user mode answer to the actual answer(s)
+
+vector_creations.rs :
+	use rand::Rng;
+	use crate::user_inputs::{user_input_int, user_input_str};
+
+	pub fn vector_creator
+	fn fully_random_vector
+	fn partially_random_vector
+	pub fn choose_parameters
+
+user_inputs.rs :
+	use std::io;
+
+	pub fn user_input_str
+	pub fn user_input_int
+
+median_mode.rs :
+	use std::collections::HashMap;
+
+	pub fn median_in_vector
+	pub fn mode_in_vector. 
+		expand to check if no mode. if no mode, return an empty vec
+		refactor to return a vec<i32>
+		if only one mode, vec len should be 1. if multiple, len should be more than 1
+	if main.rs can't handle the multiple mode cases, do it here. main.rs will handle answers
+
+
+not really sure if this file existing in the folder will affect the program in any way.
+honestly same with the stupid picture. i hope it's fine.
+		
+	
+	
+	

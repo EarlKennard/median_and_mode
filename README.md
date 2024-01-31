@@ -21,9 +21,15 @@ If you use a different I.D.E., provided it can run Rust, then the process is lik
 # Future fixes/planned changes
 
 1. Fix everything listed in the problems section.
-2. Introducing more modularity to the project by wrapping similar functions inside modules and/or separating said modules into files.
+2. In the future, perhaps create a simple graphical UI
 
 # Genesis of the project
 
 I got the idea to make this from the Rust book as one of the three suggested exercises: https://doc.rust-lang.org/stable/book/ch08-03-hash-maps.html. It's at the end of the page.
 I wanted to make this because the original vector exercise seemed trivial, but this turned out to be more of a hassle than I expected.
+
+# Notes on planning.txt and vector creation flowchart.png included in the project
+
+If you can, please ignore them. I included them for 
+a) posterity so I can look back at the project and quickly see the planning/overall structure if I forget, and 
+b) also for posterity so any curious strangers can see how I created the program, even if the program really is simple at the end of the day.

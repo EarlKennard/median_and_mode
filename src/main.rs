@@ -1,5 +1,12 @@
-use rand::Rng;
-use std::{collections::HashMap, io};
+pub mod user_inputs;
+pub mod vector_creations;
+pub mod median_mode;
+
+use crate::user_inputs::user_input_str;
+use crate::user_inputs::user_input_int;
+use crate::vector_creations::vector_creator;
+use crate::median_mode::median_in_vector;
+use crate::median_mode::mode_in_vector;
 
 fn main() {
     println!("Hello, world! This is a median and mode program.
@@ -38,160 +45,6 @@ fn choose_or_no() -> bool {
             _ => continue,
         }
     }
-}
-
-// io fn that specifically returns Strings
-fn user_input_str() -> String {
-    let mut input = String::new();
-
-    io::stdin()
-        .read_line(&mut input)
-        .expect("Failed to read line!");
-
-    input = input.trim().to_lowercase();
-
-    input
-}
-
-// function that determines whether to construct fully or partially random vector
-fn vector_creator(choice: bool) -> Vec<i32> {
-    if choice == false {
-        let random_vector = fully_random_vector();
-        random_vector
-    } else {
-        let tuple = choose_parameters();
-        let chosen_vector = partial_random_vector(tuple);
-        chosen_vector
-    }
-}
-
-// io fn that specifically returns signed 32-bit integers
-fn user_input_int() -> i32 {
-    let mut number = String::new();
-
-    io::stdin()
-        .read_line(&mut number)
-        .expect("Failed to read line!");
-
-    let number: i32 = number
-        .trim()
-        .parse()
-        .expect("You did not enter a number");
-
-    number
-}
-
-// fn that creates a fully randomized vector
-fn fully_random_vector() -> Vec<i32> {
-    let mut vector_size: u32 = rand::thread_rng().gen_range(5..=20);
-    let upper_bound: i32 = rand::thread_rng().gen_range(-50..=100);
-    let lower_bound: i32 = rand::thread_rng().gen_range(-100..upper_bound);
-
-    let mut vector = Vec::new();
-    while vector_size > 0 {
-        let number = rand::thread_rng().gen_range(lower_bound..=upper_bound);
-        vector.push(number);
-        vector_size -= 1;
-    }
-
-    vector
-}
-
-// fn that creates a partially randomized vector, aka only the numbers are randomized
-fn partial_random_vector((size, upper, lower): (u32, i32, i32)) -> Vec<i32> {
-    let mut vector_partial_size = size;
-    let mut vector = Vec::new();
-
-    while vector_partial_size > 0 {
-        let number = rand::thread_rng().gen_range(lower..=upper);
-        vector.push(number);
-        vector_partial_size -= 1;
-    }
-
-    vector
-}
-
-// fn that handles choosing parameters
-fn choose_parameters() -> (u32, i32, i32) {
-    println!("So you want to choose the parameters.");
-
-    let mut tup: (u32, i32, i32) = (1, 1, 1);
-
-    loop {
-        println!("Choose the size of the vector. The minimum is 5 and the maximum is 20.
-        If you see this message again, that means you chose a number outside of those limits or had an invalid input.");
-        let mut size = user_input_str();
-        let size: u32 = match size.trim().parse() {
-            Ok(num) => num,
-            Err(_) => continue,
-        };
-        if size > 4 && size < 21 {
-            tup.0 = size;
-            break;
-        } else {
-            continue;
-        }
-    }
-
-    loop {
-        println!("Choose the upper bound of the vector. The minimum is -50 and the maximum is 100.
-        If you see this message again, that means you chose a number outside of those limits or had an invalid input.");
-        let upper = user_input_int();
-        if upper > -51 && upper < 101 {
-            tup.1 = upper;
-            break;
-        } else {
-            continue;
-        }
-    }
-
-    loop {
-        println!("Choose the lower bound of the vector. The minimum is -100 and the maximum is whatever you chose the upper bound to be.
-        If you see this message again, that means you chose a number outside of those limits or had an invalid input.");
-        let lower = user_input_int(); 
-        if lower > -101 && lower < tup.1 {
-            tup.2 = lower;
-            break;
-        } else {
-            continue;
-        }
-    }
-
-    tup
-}
-
-// given a sorted vector, find its median
-fn median_in_vector(vector: &Vec<i32>) -> i32 {
-    let len = vector.len();
-    if len % 2 != 0 {
-        let number = vector.get((len + 1) / 2).unwrap();
-        *number
-    } else {
-        let number = (vector.get(len / 2).unwrap() + vector.get((len + 1) / 2).unwrap()) / 2;
-        number
-    }
-}
-
-// given a sorted vector, find its mode
-// problem: this works but can't handle more than one answer. the user can be technically correct if there's more than answer
-// problem: if there's no mode, there is no answer, but this one always returns an answer. if there's no mode, the answer returned will be the first item in vector
-fn mode_in_vector(vector: &Vec<i32>) -> i32 {
-    let mut tracker: HashMap<i32, u32> = HashMap::new();
-
-    // initializes the values in the hashmap
-    for i in vector {
-        *tracker.entry(*i).or_insert(1) += 1;
-    }
-
-    // keeps track of the highest count
-    let mut highest = *vector.get(0).unwrap();
-    for (key, value) in &tracker {
-        if *value > *tracker.get(&highest).unwrap() {
-            highest = *key;
-        }
-    }
-    
-    highest
 }
 
 // prompts user to give the median and mode of an unsorted vector. has to receive an unsorted vector
@@ -240,4 +93,13 @@ g. check the user's answer with d. and e., print d. and e. and tell user if they
 
 10. my brain is just about breaking from this and i'm only halfway done, not to mention the possible debugging and the frikking modularity i'd have to do
 (separating functionality into files or modules)
+
+11. i'm not too sure about modules
+a) i kind of get why i have to do pub mod [file] and then bring the relevant fns into scope by typing 'use', but fsr this pub mod also affects vector_creations.rs.
+they both have to use user_inputs.rs, so i have to bring its fns into scope with use, but idk why using pub mod in main affects the visibility of user_inputs 
+in vector_creations. is it cuz main uses vector_creations, and so declaring it in main affects vector_creations? weird
+b) also, using 'pub mod user_inputs;' in vector_creations gives an error. it's like it expects a folder called vector_creations where user_inputs will be. either a folder
+or a module that contains user_inputs. man this is so weird. 
+
+i kind of get rust modules, but at the same time I really don't.
 */

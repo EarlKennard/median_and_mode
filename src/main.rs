@@ -2,11 +2,9 @@ pub mod user_inputs;
 pub mod vector_creations;
 pub mod median_mode;
 
-use crate::user_inputs::user_input_str;
-use crate::user_inputs::user_input_int;
+use crate::user_inputs::{user_input_str, user_input_int};
 use crate::vector_creations::vector_creator;
-use crate::median_mode::median_in_vector;
-use crate::median_mode::mode_in_vector;
+use crate::median_mode::{median_in_vector, mode_in_vector};
 
 fn main() {
     println!("Hello, world! This is a median and mode program.
@@ -95,9 +93,10 @@ g. check the user's answer with d. and e., print d. and e. and tell user if they
 (separating functionality into files or modules)
 
 11. i'm not too sure about modules
-a) i kind of get why i have to do pub mod [file] and then bring the relevant fns into scope by typing 'use', but fsr this pub mod also affects vector_creations.rs.
-they both have to use user_inputs.rs, so i have to bring its fns into scope with use, but idk why using pub mod in main affects the visibility of user_inputs 
-in vector_creations. is it cuz main uses vector_creations, and so declaring it in main affects vector_creations? weird
+a) i kind of get why i have to do pub mod [file] and then bring the relevant fns into scope by typing 'use', but fsr this 'pub mod user_inputs;'
+also affects vector_creations.rs. they both have to use user_inputs.rs, so i have to bring its fns into scope with 'use ...' in both files, but idk why using the aforementioned
+pub mod in main also affects the visibility of user_inputs in vector_creations. is it cuz main uses vector_creations, and so declaring it in main affects vector_creations? 
+weird.
 b) also, using 'pub mod user_inputs;' in vector_creations gives an error. it's like it expects a folder called vector_creations where user_inputs will be. either a folder
 or a module that contains user_inputs. man this is so weird. 
 

@@ -2,7 +2,7 @@ pub mod user_inputs;
 pub mod vector_creations;
 pub mod median_mode;
 
-use crate::user_inputs::{user_input_str, user_input_int};
+use crate::user_inputs::{user_input_str, user_input_veci32, user_inputf64};
 use crate::vector_creations::vector_creator;
 use crate::median_mode::{median_in_vector, mode_in_vector};
 
@@ -13,20 +13,16 @@ fn main() {
 
     let user_choice = choose_or_no();
     let unsorted_vector = vector_creator(user_choice);
-    let mut sorted_vector = unsorted_vector.clone(); // i hope this doesn't have some borrowing/ownership shenanigans
+    let mut sorted_vector = unsorted_vector.clone(); // i'd prefer not to use clone() but i don't think this is too bad
     sorted_vector.sort();
-    let median_vector = median_in_vector(&sorted_vector); // i really hope this doesn't have ownership shenanigans
+    let median_vector = median_in_vector(&sorted_vector);
     let mode_vector = mode_in_vector(&sorted_vector);
-    let tuple_answer = user_answers(&unsorted_vector);
 
-    let median_answer = tuple_answer.0;
-    let mode_answer = tuple_answer.1; // idk why i have to do this
-    if median_answer == median_vector && mode_answer == mode_vector {
-        println!("Congrats, you got it correct!");
-    } else {
-        println!("Wrong! Try again! The median was {} and the mode was {}. If you're still confused, here's the vectorwhen sorted: {:?}", median_vector, mode_vector, 
-        &sorted_vector);
-    }
+    let median_answer = median_answer(&unsorted_vector);
+    median_checker(median_vector, median_answer);
+
+    let mode_answer = mode_answer(&unsorted_vector);
+    mode_checker(&mode_vector, mode_answer);
 }
 
 // user chooses whether or not to choose the vector's parameters
@@ -45,27 +41,42 @@ fn choose_or_no() -> bool {
     }
 }
 
-// prompts user to give the median and mode of an unsorted vector. has to receive an unsorted vector
-// problem: like mode_in_vector(), this isn't correct if there's more than one mode in the vector or if there's no mode at all
-fn user_answers(unsorted_vector: &Vec<i32>) -> (i32, i32) {
-    println!("Now that a vector has been created, it's time to for a quiz: what is its median and mode?
-    To answer, please type in the following format: 
-    median 
-    mode
-    In essence, two numbers separated by pressing enter. 
-    Another example: 
-    90 
-    5
-    In that example, 90 was the median and 5 was the mode.
-    No other format will be accepted.\n");
+fn mode_answer(unsorted_vector: &Vec<i32>) -> Vec<i32> {
+    println!("Here is the unsorted vector: {:?}", unsorted_vector);
+    println!("What is the vector's mode? If there is more than one, please separate each mode by a space. If there is no mode, press enter for no answer.");
 
-    println!("What is the median and mode of {:?}", unsorted_vector);
-    let mut tuple = (1, 1,);
-    // not very good cuz if there's an invalid input, program just crashes. fuck it we ball
-    tuple.0 = user_input_int();
-    tuple.1 = user_input_int();
+    let user_mode_vec = user_input_veci32();
+    user_mode_vec
+}
 
-    tuple
+fn median_answer(unsorted_vector: &Vec<i32>) -> f64 {
+    println!("Here is the unsorted vector: {:?}", unsorted_vector);
+    println!("What is the vector's median? There can only be one answer.");
+
+    let answer = user_inputf64();
+    answer
+}
+
+fn mode_checker(answers: &Vec<i32>, input: Vec<i32>) {
+    let correct_answers: Vec<_> = input.into_iter().filter(|item| answers.contains(item)).collect();
+
+    if correct_answers.len() == answers.len() {
+        println!("Congrats! You got all of the right answers.");
+    } else if correct_answers.len() != 0 && correct_answers.len() < answers.len() {
+        println!("Sorry! You only got some of the modes right. You get {} points.", correct_answers.len())
+    } else {
+        println!("Sorry! Your answer didn't contain a single correct mode.")
+    }
+
+    println!("Here is the set of correct modes: {:?}", answers);
+}
+
+fn median_checker(answer: f64, input: f64) {
+    if answer == input {
+        println!("Congrats! You got the median correct.");
+    } else {
+        println!("Oh no! You got it wrong. The correct median was {}", answer);
+    }
 }
 
 /* planning:

@@ -38,6 +38,31 @@ median_mode.rs :
 		if only one mode, vec len should be 1. if multiple, len should be more than 1
 	if main.rs can't handle the multiple mode cases, do it here. main.rs will handle answers
 
+unit_tests.rs :
+	use everything	
+	
+	#[test]
+	fn choose_or_no_checker
+		can i even test for invalid inputs? can i even test user input?
+	fn vector_creator_interface_check
+		idk how i'm gonna do this one. prob leave it for now since it relies on two other functions.
+		probably a prime candidate for integration testing
+	- idk how to test fully_random_vector(). prob can't. can maybe only test for the upper and lower 
+	bounds and len
+	- same for partial_random_vector. check bounds and len
+	- idk how to test choose_parameters(). can probably only test input, and if that's the case,
+	then it's better to test the input functions (if that's even possible for me)
+	- can i even test the user input fns?
+	fn median_in_vector_test
+		should be more straightforward since i can test for the cases
+	fn mode_in_vector_test
+		check the possible cases
+	fn mode_checker_test
+		check the cases
+	fn median_checker_test
+		check the cases
+	
+	
 
 not really sure if this file existing in the folder will affect the program in any way.
 honestly same with the stupid picture. i hope it's fine.

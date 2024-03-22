@@ -52,7 +52,7 @@ fn choose_parameters() -> (u32, i32, i32) {
     loop {
         println!("Choose the size of the vector. The minimum is 5 and the maximum is 20.
         If you see this message again, that means you chose a number outside of those limits or had an invalid input.");
-        let mut size = user_input_str();
+        let size = user_input_str();
         let size: u32 = match size.trim().parse() {
             Ok(num) => num,
             Err(_) => continue,
@@ -81,7 +81,7 @@ fn choose_parameters() -> (u32, i32, i32) {
         println!("Choose the lower bound of the vector. The minimum is -100 and the maximum is whatever you chose the upper bound to be.
         If you see this message again, that means you chose a number outside of those limits or had an invalid input.");
         let lower = user_input_int(); 
-        if lower > -101 && lower < tup.1 {
+        if lower > -101 && lower <= tup.1 {
             tup.2 = lower;
             break;
         } else {

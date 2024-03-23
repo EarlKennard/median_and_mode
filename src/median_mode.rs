@@ -13,8 +13,6 @@ pub fn median_in_vector(vector: &Vec<i32>) -> f64 {
 }
 
 // given a sorted vector, find its mode
-// problem: this works but can't handle more than one answer. the user can be technically correct if there's more than answer
-// problem: if there's no mode, there is no answer, but this one always returns an answer. if there's no mode, the answer returned will be the first item in vector
 pub fn mode_in_vector(vector: &Vec<i32>) -> Vec<i32> {
     let mut tracker: HashMap<i32, u32> = HashMap::new();
 
@@ -52,4 +50,64 @@ pub fn mode_in_vector(vector: &Vec<i32>) -> Vec<i32> {
     }
 
     vec_of_modes
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn vector_median_odd_set() {
+        let vector = vec![1, 2, 3, 4, 5];
+
+        assert_eq!(median_in_vector(&vector), 3.0);
+        assert_eq!(median_in_vector(&vector), 3 as f64);
+
+        // note: rust does automatic conversion from i32/u32 to f64 when doing user inputs. but as far as I know, I can't test for assert_eq RHS w/ 3.0 as i32
+        // maybe i can, but i'm just too lazy
+    }
+
+    #[test]
+    fn vector_median_even_set() {
+        let vector = vec![1, 2, 3, 4, 5, 6];
+
+        assert_eq!(median_in_vector(&vector), 3.5);
+    }
+
+    #[test]
+    fn mode_vector_no_mode() {
+        let vector = vec![1, 2, 3, 4, 5];
+
+        assert_eq!(mode_in_vector(&vector), vec![]);
+    }
+
+    #[test]
+    fn mode_vector_one_mode() {
+        let vector = vec![5, 6, 7, 10, 10, 20, 30];
+
+        assert_eq!(mode_in_vector(&vector), vec![10]);
+    }
+
+    #[test]
+    fn mode_vector_many_numbers_one_mode() {
+        let vector = vec![1, 2, 3, 4, 4, 3, 5, 5, 3, 3, 6, 7, 3];
+
+        assert_eq!(mode_in_vector(&vector), vec![3]);
+    }
+
+    #[test]
+    fn mode_vector_six_different_modes() {
+        let vector = vec![1, 2, 2, 3, 4, 4, 5, 5, 6, 6, 7, 8, 9, 10, 10, 11, 12, 11];
+        let mut sorted = mode_in_vector(&vector);
+        sorted.sort(); // i don't like how i have to do this separately
+
+        assert_eq!(sorted, vec![2, 4, 5, 6, 10, 11]);
+    }
+
+    #[test]
+    fn mode_vector_one_number_one_mode() {
+        let vector = vec![1, 1, 1, 1, 1];
+
+        assert_eq!(mode_in_vector(&vector), vec![1]);
+    }
 }

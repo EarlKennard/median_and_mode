@@ -1,0 +1,59 @@
+main.rs : 
+	pub mod user_inputs;
+	pub mod vector_creations;
+	pub mod median_mode;
+	// note: i can probably just remove pub, and in the mods make the relevant fns pub
+
+	use crate::user_inputs::{user_input_int, user_input_veci32, user_inputf64};
+	use crate::vector_creations::vector_creator;
+	use crate::median_mode::{median_in_vector, mode_in_vector};
+	
+	fn main()
+
+	fn choose_or_no() -> bool
+	fn mode_answer(unsorted_vector: &Vec<i32>) -> Vec<i32>
+	fn median_answer(unsorted_vector: &Vec<i32>) -> f64
+	fn mode_checker(answers: &Vec<i32>, input: Vec<i32>)
+	fn median_checker(answer: f64, input: f64)
+	
+	unit tests
+
+vector_creations.rs :
+	use rand::Rng;
+	use crate::user_inputs::{user_input_int, user_input_str};
+
+	pub fn vector_creator(choice: bool) -> Vec<i32>
+	fn fully_random_vector() -> Vec<i32>
+	fn partial_random_vector((size, upper, lower): (u32, i32, i32)) -> Vec<i32>
+	fn choose_parameters() -> (u32, i32, i32)
+
+user_inputs.rs :
+	use std::io;
+
+	pub fn user_input_int() -> i32
+	pub fn user_inputf64() -> f64
+	pub fn user_input_str() -> String
+	pub fn user_input_veci32() -> Vec<i32>
+
+median_mode.rs :
+	use std::collections::HashMap;
+
+	pub fn median_in_vector(vector: &Vec<i32>) -> f64
+	pub fn mode_in_vector(vector: &Vec<i32>) -> Vec<i32>
+
+	unit tests
+
+
+// note on unit tests: i chose to only do unit tests on fns that follow all of the following rules:
+	1. doesn't call user input fns inside its body
+	2. if user input is in play, it is only as a parameter in the fn definition
+	3. generates different returns depending on controllable variables. aka don't test the
+		random num gen fns
+
+// note: i still might test the user input fns someday if i can
+
+// note: i might add integration tests in the future
+		
+	
+	
+	

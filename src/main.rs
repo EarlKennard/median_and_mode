@@ -58,7 +58,12 @@ fn median_answer(unsorted_vector: &Vec<i32>) -> f64 {
 }
 
 fn mode_checker(answers: &Vec<i32>, input: Vec<i32>) {
-    let correct_answers: Vec<_> = input.into_iter().filter(|item| answers.contains(item)).collect();
+    if answers.len() == 0 && input.len() > 0 {
+        println!("Sorry! Your answer didn't contain a single correct mode.");
+    }
+
+    let correct_answers: Vec<_> = input.clone().into_iter().filter(|item| answers.contains(item)).collect();
+    // i don't like this clone()
 
     if correct_answers.len() == answers.len() {
         println!("Congrats! You got all of the right answers.");
@@ -75,41 +80,106 @@ fn median_checker(answer: f64, input: f64) {
     if answer == input {
         println!("Congrats! You got the median correct.");
     } else {
-        println!("Oh no! You got it wrong. The correct median was {}", answer);
+        println!("Oh no! You got it wrong. The correct median was {}.", answer);
     }
 }
 
-/* planning:
-1. randomize size of vector, the upper and lower bounds for the numbers, and the numbers to be stored in the vector
-2. either ask user for the size and upper/lower bounds, or randomize them
-3. sort by lowest to highest and get the median. if i'm storing one by one, why not just pre-sort the numbers?
-4. keep track of the mode via hashmap
-5. print the vector to the console. ask user to give its mode and median
-6. print to console the results and determine + tell user if they were correct
+#[cfg(test)]
+mod tests {
+    use super::*;
 
-7. should i separate functionalities in multiple files?
-functionalities:
-a. first ask user if they want to choose
-b. an api that takes an argument (true/false if choose) and returns a vector unsorted
-c. a function that sorts the vector from lowest to high
-d. given a sorted function, find the median
-e. another api that tracks the mode
-f. print vector in b. to console. ask user to find the median and mode
-g. check the user's answer with d. and e., print d. and e. and tell user if they were right
+    fn median_checker_mirror(answer: f64, input: f64) -> String {
+        // this is incredibly hacky and i don't like it, and it may even be unacceptable
+        // i'm not returning &str cuz it requires a static lifetime and idk how i feel about that, i don't really like it
 
-8. i can combine c and d together
-9. i can but i shouldn't. need to separate responsibilities
+        if answer == input {
+            String::from("Correct")
+        } else {
+            String::from("Wrong")
+        }
+    }
 
-10. my brain is just about breaking from this and i'm only halfway done, not to mention the possible debugging and the frikking modularity i'd have to do
-(separating functionality into files or modules)
+    #[test]
+    fn median_checker_correct_answer() {
+        assert_eq!(median_checker_mirror(3.0, 3.0), "Correct");
+    }
 
-11. i'm not too sure about modules
-a) i kind of get why i have to do pub mod [file] and then bring the relevant fns into scope by typing 'use', but fsr this 'pub mod user_inputs;'
-also affects vector_creations.rs. they both have to use user_inputs.rs, so i have to bring its fns into scope with 'use ...' in both files, but idk why using the aforementioned
-pub mod in main also affects the visibility of user_inputs in vector_creations. is it cuz main uses vector_creations, and so declaring it in main affects vector_creations? 
-weird.
-b) also, using 'pub mod user_inputs;' in vector_creations gives an error. it's like it expects a folder called vector_creations where user_inputs will be. either a folder
-or a module that contains user_inputs. man this is so weird. 
+    #[test]
+    fn median_checker_wrong_answer() {
+        assert_eq!(median_checker_mirror(3.0, 2.0), "Wrong");
+    }
 
-i kind of get rust modules, but at the same time I really don't.
-*/
+    fn mode_checker_mirror(answers: &Vec<i32>, input: Vec<i32>) -> String {
+        // also incredibly hacky
+
+        if answers.len() == 0 && input.len() > 0 {
+            return String::from("Sorry! Your answer didn't contain a single correct mode.")
+        }
+
+        let correct_answers: Vec<_> = input.clone().into_iter().filter(|item| answers.contains(item)).collect();
+
+        if correct_answers.len() == answers.len() {
+            String::from("Congrats! You got all of the right answers.")
+        } else if correct_answers.len() != 0 && correct_answers.len() < answers.len() {
+            String::from("Sorry! You only got some of the modes right.")
+        } else {
+            String::from("Sorry! Your answer didn't contain a single correct mode.")
+        }
+    }
+
+    #[test]
+    fn mode_checker_all_right() {
+        let answer_vector = vec![2, 3, 4, 5];
+        let input_vector = vec![5, 4, 3, 2];
+
+        assert_eq!(mode_checker_mirror(&answer_vector, input_vector), "Congrats! You got all of the right answers.");
+    }
+
+    #[test]
+    fn mode_checker_all_right_empty() {
+        let answer_vector = vec![];
+        let input_vector = vec![];
+
+        assert_eq!(mode_checker_mirror(&answer_vector, input_vector), "Congrats! You got all of the right answers.");
+    }
+
+    #[test]
+    fn mode_checker_some_right_smaller_input() {
+        let answer_vector = vec![2, 3, 4, 5];
+        let input_vector = vec![5, 4, 3];
+
+        assert_eq!(mode_checker_mirror(&answer_vector, input_vector), "Sorry! You only got some of the modes right.");
+    }
+
+    #[test]
+    fn mode_checker_some_right_bigger_input() {
+        let answer_vector = vec![2, 3, 4, 5];
+        let input_vector = vec![5, 4, 3, 1, 6, 7];
+
+        assert_eq!(mode_checker_mirror(&answer_vector, input_vector), "Sorry! You only got some of the modes right.");
+    }
+
+    #[test]
+    fn mode_checker_none_right_empty_vec() {
+        let answer_vector = vec![2, 3, 4, 5];
+        let input_vector = vec![];
+
+        assert_eq!(mode_checker_mirror(&answer_vector, input_vector), "Sorry! Your answer didn't contain a single correct mode.");
+    }
+
+    #[test]
+    fn mode_checker_none_right_at_all() {
+        let answer_vector = vec![2, 3, 4, 5];
+        let input_vector = vec![6, 7, 8, 9, 10, 11];
+
+        assert_eq!(mode_checker_mirror(&answer_vector, input_vector), "Sorry! Your answer didn't contain a single correct mode.");
+    }
+
+    #[test]
+    fn mode_checker_correct_empty_vec() {
+        let answer_vector = vec![];
+        let input_vector = vec![6, 7, 8, 9, 10, 11];
+
+        assert_eq!(mode_checker_mirror(&answer_vector, input_vector), "Sorry! Your answer didn't contain a single correct mode.");
+    }
+}

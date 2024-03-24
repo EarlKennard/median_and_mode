@@ -7,7 +7,7 @@ The numbers inside the vector will always be random, but the user will be prompt
 
 The vector that is spit out is unsorted, so correctly answering the median and mode can be non-trivial, especially on vectors with lengths above 15.
 
-Just for fun, this project has some unit testing.
+This project has unit testing.
 
 # How to run it
 
@@ -16,13 +16,11 @@ If you use a different I.D.E., provided it can run Rust, then the process is lik
 
 # Problems
 
-1. needs more robust error handling in the user inputs
+None so far. To see the problems that were fixed, please look at the commit history and the previous READMEs that listed the various problems.
 
 # Future fixes/planned changes
 
-1. Fix everything listed in the problems section.
-2. rewrite all the for loops in idiomatic rust with iter() and refactor some of the functions if needed
-4. reorganize the code so all the functionality resides in a 'lib' folder inside src, and main.rs only contains an overview of the program
+None so far. After all the previous changes and problems fixed, I am now pretty happy with the state of the program.
 
 # Genesis of the project
 

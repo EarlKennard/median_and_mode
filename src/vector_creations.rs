@@ -1,5 +1,5 @@
 use rand::Rng;
-use crate::user_inputs::{user_input_int, user_input_str};
+use crate::user_inputs::user_input_str;
 
 // function that determines whether to construct fully or partially random vector
 pub fn vector_creator(choice: bool) -> Vec<i32> {
@@ -68,7 +68,11 @@ fn choose_parameters() -> (u32, i32, i32) {
     loop {
         println!("Choose the upper bound of the vector. The minimum is -50 and the maximum is 100.
         If you see this message again, that means you chose a number outside of those limits or had an invalid input.");
-        let upper = user_input_int();
+        let upper = user_input_str();
+        let upper: i32 = match upper.trim().parse() {
+            Ok(num) => num,
+            Err(_) => continue,
+        };
         if upper > -51 && upper < 101 {
             tup.1 = upper;
             break;
@@ -80,7 +84,11 @@ fn choose_parameters() -> (u32, i32, i32) {
     loop {
         println!("Choose the lower bound of the vector. The minimum is -100 and the maximum is whatever you chose the upper bound to be.
         If you see this message again, that means you chose a number outside of those limits or had an invalid input.");
-        let lower = user_input_int(); 
+        let lower = user_input_str();
+        let lower: i32 = match lower.trim().parse() {
+            Ok(num) => num,
+            Err(_) => continue,
+        };
         if lower > -101 && lower <= tup.1 {
             tup.2 = lower;
             break;

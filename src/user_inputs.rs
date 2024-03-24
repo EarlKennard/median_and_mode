@@ -1,6 +1,8 @@
 use std::io;
 
 //DRY. io fn that specifically returns signed 32-bit integers
+// deprecated cuz no longer needed. kept here for posterity
+/* 
 pub fn user_input_int() -> i32 {
     let mut number = String::new();
 
@@ -15,7 +17,10 @@ pub fn user_input_int() -> i32 {
 
     number
 }
+*/
 
+// deprecated cuz no longer needed. kept here for posterity
+/*
 pub fn user_inputf64() -> f64 {
     let mut number = String::new();
 
@@ -30,6 +35,7 @@ pub fn user_inputf64() -> f64 {
 
     number
 }
+*/
 
 // io fn that specifically returns Strings
 pub fn user_input_str() -> String {

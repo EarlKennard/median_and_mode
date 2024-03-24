@@ -1,8 +1,8 @@
-pub mod user_inputs;
-pub mod vector_creations;
-pub mod median_mode;
+mod user_inputs;
+mod vector_creations;
+mod median_mode;
 
-use crate::user_inputs::{user_input_str, user_input_veci32, user_inputf64};
+use crate::user_inputs::{user_input_str, user_input_veci32};
 use crate::vector_creations::vector_creator;
 use crate::median_mode::{median_in_vector, mode_in_vector};
 
@@ -50,22 +50,36 @@ fn mode_answer(unsorted_vector: &Vec<i32>) -> Vec<i32> {
 }
 
 fn median_answer(unsorted_vector: &Vec<i32>) -> f64 {
-    println!("Here is the unsorted vector: {:?}", unsorted_vector);
-    println!("What is the vector's median? There can only be one answer.");
+    let outer: f64;
 
-    let answer = user_inputf64();
-    answer
+    loop {
+        println!("Here is the unsorted vector: {:?}", unsorted_vector);
+        println!("What is the vector's median? There can only be one answer. If you see this again, there was an invalid input.");
+
+        let inner = user_input_str();
+        let _inner: f64 = match inner.trim().parse() {
+            Ok(num) => { 
+                outer = num;
+                break
+            },
+            Err(_) => continue,
+        };
+    }
+
+    outer
 }
 
 fn mode_checker(answers: &Vec<i32>, input: Vec<i32>) {
     if answers.len() == 0 && input.len() > 0 {
         println!("Sorry! Your answer didn't contain a single correct mode.");
+        return
     }
 
-    let correct_answers: Vec<_> = input.clone().into_iter().filter(|item| answers.contains(item)).collect();
-    // i don't like this clone()
+    let correct_answers: Vec<_> = input.iter().filter(|item| answers.contains(item)).collect();
 
-    if correct_answers.len() == answers.len() {
+    if answers.len() == 0 && input.len() == 0 {
+        println!("Congrats! You either knew there was no mode or all your answers were literally invalid inputs. If it's the latter, may god have mercy on your soul.");
+    } else if correct_answers.len() == answers.len() {
         println!("Congrats! You got all of the right answers.");
     } else if correct_answers.len() != 0 && correct_answers.len() < answers.len() {
         println!("Sorry! You only got some of the modes right. You get {} points.", correct_answers.len())
@@ -74,6 +88,10 @@ fn mode_checker(answers: &Vec<i32>, input: Vec<i32>) {
     }
 
     println!("Here is the set of correct modes: {:?}", answers);
+
+    // note: bug here and mode_answer() where if there are no valid user answers (e.g. "yes yes yes") and the vector has no mode and returns a vec![], the user's answers
+    // are still deemed correct
+    // fix: just accept both and differentiate at the end
 }
 
 fn median_checker(answer: f64, input: f64) {
@@ -85,7 +103,7 @@ fn median_checker(answer: f64, input: f64) {
 }
 
 #[cfg(test)]
-mod tests {
+mod median_tests {
     use super::*;
 
     fn median_checker_mirror(answer: f64, input: f64) -> String {
@@ -108,7 +126,10 @@ mod tests {
     fn median_checker_wrong_answer() {
         assert_eq!(median_checker_mirror(3.0, 2.0), "Wrong");
     }
+}
 
+#[cfg(test)]
+mod mode_tests {
     fn mode_checker_mirror(answers: &Vec<i32>, input: Vec<i32>) -> String {
         // also incredibly hacky
 

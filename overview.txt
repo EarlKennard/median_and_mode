@@ -1,10 +1,9 @@
 main.rs : 
-	pub mod user_inputs;
-	pub mod vector_creations;
-	pub mod median_mode;
-	// note: i can probably just remove pub, and in the mods make the relevant fns pub
+	mod user_inputs;
+	mod vector_creations;
+	mod median_mode;
 
-	use crate::user_inputs::{user_input_int, user_input_veci32, user_inputf64};
+	use crate::user_inputs::{user_input_int, user_input_veci32};
 	use crate::vector_creations::vector_creator;
 	use crate::median_mode::{median_in_vector, mode_in_vector};
 	
@@ -20,7 +19,7 @@ main.rs :
 
 vector_creations.rs :
 	use rand::Rng;
-	use crate::user_inputs::{user_input_int, user_input_str};
+	use crate::user_inputs::user_input_str;
 
 	pub fn vector_creator(choice: bool) -> Vec<i32>
 	fn fully_random_vector() -> Vec<i32>
@@ -30,8 +29,8 @@ vector_creations.rs :
 user_inputs.rs :
 	use std::io;
 
-	pub fn user_input_int() -> i32
-	pub fn user_inputf64() -> f64
+	deprecated: pub fn user_input_int() -> i32
+	deprecated: pub fn user_inputf64() -> f64
 	pub fn user_input_str() -> String
 	pub fn user_input_veci32() -> Vec<i32>
 

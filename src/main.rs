@@ -102,6 +102,8 @@ fn median_checker(answer: f64, input: f64) {
     }
 }
 
+// TODO: change median_checker and mode_checker to be match statements, and have them return strings so that 
+// they can be tested
 #[cfg(test)]
 mod median_tests {
     use super::*;

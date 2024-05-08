@@ -14,6 +14,14 @@ This project has unit testing.
 Clone the repo and make sure you have Rust installed in your VSCODE. Go to the proper directory and type in 'cargo run' and you'll see it on your terminal.
 If you use a different I.D.E., provided it can run Rust, then the process is likely similar.
 
+# Program in action
+
+This first example is a fully random vector.
+![fully_random_vector](pics/fully_random_vector.png)
+
+The second example is the user choosing the parameters of the vector.
+![partially_random_vector](pics/partially_random_vector.png)
+
 # Problems
 
 None so far. To see the problems that were fixed, please look at the commit history and the previous READMEs that listed the various problems.

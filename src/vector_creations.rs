@@ -1,15 +1,18 @@
-use rand::Rng;
 use crate::user_inputs::user_input_str;
+use rand::Rng;
 
 // function that determines whether to construct fully or partially random vector
 pub fn vector_creator(choice: bool) -> Vec<i32> {
-    if choice == false {
-        let random_vector = fully_random_vector();
-        random_vector
-    } else {
-        let tuple = choose_parameters();
-        let chosen_vector = partial_random_vector(tuple);
-        chosen_vector
+    match choice {
+        false => {
+            // this is the random vector
+            fully_random_vector()
+        }
+        true => {
+            // this is the user chosen vector
+            let tuple = choose_parameters();
+            partial_random_vector(tuple)
+        }
     }
 }
 

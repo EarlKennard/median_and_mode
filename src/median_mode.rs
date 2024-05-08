@@ -1,32 +1,37 @@
 use std::collections::HashMap;
 
 // given a sorted vector, find its median
-pub fn median_in_vector(vector: &Vec<i32>) -> f64 {
+pub fn median_in_vector(vector: &[i32]) -> f64 {
     let len = vector.len();
     if len % 2 != 0 {
         let number = *vector.get(((len + 1) / 2) - 1).unwrap();
         number.into()
     } else {
-        let number: f64 = (vector.get(len / 2).unwrap() + vector.get(((len + 1) / 2) - 1).unwrap()) as f64 / 2.0;
+        let number: f64 =
+            (vector.get(len / 2).unwrap() + vector.get(((len + 1) / 2) - 1).unwrap()) as f64 / 2.0;
         number
     }
 }
 
 // given a sorted vector, find its mode
-pub fn mode_in_vector(vector: &Vec<i32>) -> Vec<i32> {
+pub fn mode_in_vector(vector: &[i32]) -> Vec<i32> {
     let mut tracker: HashMap<i32, u32> = HashMap::new();
 
     // initializes the values in the hashmap to keep track of mode(s)
     for i in vector {
         match tracker.get(i) {
-            Some(count) => { tracker.insert(*i, count + 1); },
-            None => { tracker.insert(*i, 1); },
+            Some(count) => {
+                tracker.insert(*i, count + 1);
+            }
+            None => {
+                tracker.insert(*i, 1);
+            }
         }
     }
 
     // keeps track of the highest count
     let mut counter = 0;
-    for (_key, value) in &tracker {
+    for value in tracker.values() {
         if *value > counter {
             counter = *value;
         }
@@ -35,16 +40,16 @@ pub fn mode_in_vector(vector: &Vec<i32>) -> Vec<i32> {
     // if the highest count is 1, there is no mode
     if counter == 1 {
         // let entire: Vec<i32> = vector.clone(); // funny thing: when this clones, i think it rearranges all the numbers to be in order lol. keeping it here 4 posterity
-        return vec![]
+        return vec![];
     }
 
     // note: i think there's a debate on whether or not a set with no repeating numbers has a mode at all. in this one, i chose the simpler option and returned an empty vec
-    
+
     let mut vec_of_modes: Vec<i32> = Vec::new();
 
     // check the modes
     for (key, value) in &tracker {
-        if *value == counter  && !vec_of_modes.contains(key) {
+        if *value == counter && !vec_of_modes.contains(key) {
             vec_of_modes.push(*key);
         }
     }
